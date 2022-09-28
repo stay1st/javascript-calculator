@@ -31,20 +31,20 @@ export default class App extends React.Component {
     class spreadNewInput {
       constructor(num) {
         if (num === 'clear') {
-          return this.state.input = [0]
+          return this.setState( {input: 0 })
         } else if (this.input[0] === 0) {
-          return this.setState(() => this.input = { input: [num] });
+          return this.setState({ input: [num] });
         } else if (this.input[0] > 0) {
-          return this.setState(() => this.input = { input: [...this.input, num] });
+          return this.setState({ input: [...this.input, num] });
         } else if (num === '.') {
           if (this.input.filter((val, num) => val === num)) {
             return console.error('There is already a decimal there!! Your val: ' + `${num}`);
           } else {
-            return this.setState(() => this.input = { input: [...this.input, num] });
+            return this.setState({ input: [...this.input, num] });
           }
         } else {
           console.alert('Only either #MUL,#DIV,#ADD, or #SUBT:', num);
-          this.setState(() => this.input = { input: [...num] });
+          this.setState({ input: [...num] });
         }
       }
     };
@@ -53,43 +53,43 @@ export default class App extends React.Component {
     switch (e.target.id) {
       case 'zero':
         console.log('oneID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 0] });
+        return this.setState({ input: [...this.state.input, 0] });
       case 'one':
         console.log('oneID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 1] });
+        return this.setState({ input: [...this.state.input, 1] });
       case 'two':
         console.log('twoID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 2] });;
+        return this.setState({ input: [...this.state.input, 2] });;
       case 'three':
         console.log('threeID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 3] });
+        return this.setState({ input: [...this.state.input, 3] });
       case 'four':
         console.log('fourID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 4] });
+        return this.setState({ input: [...this.state.input, 4] });
       case 'five':
         console.log('fiveID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 5] });
+        return this.setState({ input: [...this.state.input, 5] });
       case 'six':
         console.log('sixID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 6] });
+        return this.setState({ input: [...this.state.input, 6] });
       case 'seven':
         console.log('sevenID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 7] });
+        return this.setState({ input: [...this.state.input, 7] });
       case 'eight':
         console.log('eightID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 8] });
+        return this.setState({ input: [...this.state.input, 8] });
       case 'nine':
         console.log('nineID:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, 9] });
+        return this.setState({ input: [...this.state.input, 9] });
       case 'decimal':
         console.log('decimal:', e.target.id);
-        return this.setState(() => this.input = { input: [...this.state.input, '.'] });
+        return this.setState({ input: [...this.state.input, '.'] });
       case 'clear':
         console.log('clearID:', e.target.id);
-        return this.setState(() => this.input = { input: [0] });
+        return this.setState({ input: [0] });
       case 'equals':
         console.log('equalsID:', e.target.id);
-        this.ToggleName(e);
+        //this.ToggleName(e);
         return console.log('InputAfterToggle:', this.state.input)
       default:
         return console.log('No ID Found ERR:', e.target.id)
@@ -105,11 +105,11 @@ export default class App extends React.Component {
           <div>
             {/* from working test <Utils/> */}
           </div>
-          <h3 id='display'>{this.state.result}</h3>
-          <h3>{this.state.input}</h3>
+          <h3 id='display'>{this.state.input}</h3>
+          <h3>{this.state.result}</h3>
           This is where constants show: {Constants.one.value}
         </div><div>
-          <button id={Constants.clear.id} onClick={this.handleClick}>{Constants.clear.value}</button>
+          <button id={Constants.clear.id} onClick={this.setState({input: 0})}>{Constants.clear.value}</button>
           <button name={Constants.divide.name} id={Constants.divide.id} onClick={this.handleArithmetic}>{Constants.divide.value}</button>
         </div><div>
           <button id={Constants.seven.id} onClick={this.handleClick}>{Constants.seven.value}</button>
