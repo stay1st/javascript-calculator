@@ -1,84 +1,70 @@
-import React, { useState } from 'react';
-import App from './App.js';
+// import React, { useState } from 'react';
+// import objButtons from './obj.const.js'
+// import App from './App.js';
+// import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers.js';
 
 
+// export default function CreateButtons(props) {
 
+//     const [input, setInput] = useState([0]);
 
-export default function CreateButtons(props) {
+//     function spreadNewInput(num) {
 
-    const [input, setInput] = useState([0]);
+//         /* FCC rules = 0 as a placeholder and reinitialize state on #clear */
+//         if (num === 'clear') {
+//             return setInput(() => [0]);
+//             /* this conditional statement is for #clear */
+//         } else if (input[0] === 0) {
+//             return setInput(() => [num]);
+//         } else if (input[0] > 0) {
+//             return setInput(() => [...input, num]);
+//         } else if (num === '.') {
+//             /* mapping input to make sure there isn't already a decimal */
+//             if (input.filter((val, num) => val === num)) {
+//                 return 'err'
+//             } else {
+//                 return setInput(() => [...input, num]);
+//             }
+//         } else {
+//             console.alert('Only either #MUL,#DIV,#ADD, or #SUBT:', num);
+//             setInput(() => [...num]);
+//         }
+//     };
 
-    function spreadNewInput(num) {
-        /* FCC rules = 0 as a placeholder and reinitialize state on #clear */
-        if (num === 'clear') {
-            console.log('ResetInput=[0] `#clear`:', num)
-            return setInput(() => [0]);
-            /* this conditional statement is for #clear */
-        } else if (input[0] === 0) {
-            console.log('setInput=[0] Number:', num)
-            return setInput(() => [num]);
-        } else if (input[0] > 0) {
-            console.log('setInput=[...input, num] Number:', num);
-            return setInput(() => [...input, num]);
-        } else if (num === '.') {
-            /* mapping input to make sure there isn't already a decimal */
-            if (input.filter((val, num) => val === num)) {
-                return console.log('Input already has `.`', num);
-            } else {
-                return setInput(() => [...input, num]);
-            }
-        } else {
-            console.log('#MUL,#DIV,#ADD,#SUBT:', num);
-            setInput(() => [...num]);
-        }
-    };
+//     class ButtonSuperClass {
+//         constructor(id, num, method) {
+//             this.id = id;
+//             this.num = num;
+//             this.elem = <button id={`${id}`} onClick={() => spreadNewInput(this.num)}>{`${num}`}</button>;
+//         }
+//         getDetails() {
+//             return (`Button id: ${this.id} num: ${this.num}. elem: returns JSX`)
+//         }
+//     }
 
-    class ButtonSuperClass {
-        constructor(id, num) {
-            this.id = id;
-            this.num = num;
-            this.input = props.input
-            this.method = () => spreadNewInput(this.num);
-            this.elem = <button id={`${id}`} onClick={this.method}>{`${num}`}</button>;
-        }
-        getDetails() {
-            return (`This button id number ${this.id} set num=${this.num}`)
-        }
-    }
+//     ButtonSuperClass.prototype.add = function(a, b, method){
+//         this.a = a;
+//         this.b = b;
+//         this.solve = () => {
+//             return console.log("Solve " +`${this.a}` + ' and ' + `${this.b}` + "insert a function.")
+//         }
+        
+//     }
 
-    const testElement = new ButtonSuperClass('testElement', 7357);
-    const elemOne = new ButtonSuperClass('two', 2);
+//     let newObjArr = [];
 
-    return (
-        <div>
-            <p>testElement: {testElement.elem}</p>
-            <h3>Created Elements below?</h3>
-            {elemOne.elem}
-            <div id='display'><strong>DISPLAY Super:</strong> {input}</div>
-            <HandleElements
-                ButtonSuperClass={ButtonSuperClass}
-                input={input} 
-            />
-        </div>
-    )
-}
-
-export class HandleElements extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-         one: new props.ButtonSuperClass('one', 1),
-         proto: new props.ButtonSuperClass(),
-        }
-    }
-
-    render() {
-        return (
-            <div>
-            <div id='display'><strong>DISPLAY:</strong> {this.input}</div>
-            {this.state.one.elem}
-                {console.log(this.state.one)}
-            </div>
-        )
-    }
-}
+//     const values = [...objButtons].map(val => console.log('values', val))
+//     for (let i = 0; i < values.length - 1 && objButtons; i++) {
+//        newObjArr[i] = new ButtonSuperClass(objButtons[i], values[i]);
+//     }
+//     console.log('newObjArr:', newObjArr)
+//     //  test = new ButtonSuperClass('nine', 9);
+//     return (
+//         <div>
+//             <div id='display'><strong>DISPLAY Super:</strong> {input}</div>
+//             <div>
+//             {}
+//             </div>
+//         </div>
+//     )
+// }
