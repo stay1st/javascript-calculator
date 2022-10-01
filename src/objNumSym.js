@@ -40,5 +40,5 @@ export const numNoZero = [one, two, three, four, five, six, seven, eight, nine];
     export const clear = new btnOperatorStore('clear', 'ClearIt', 'AC');
     export const equals = new btnOperatorStore('equals', 'Equals', '=');
 
-export const opsAndOperations = [zero, decimal, add, subtract, divide, multiply, clear, equals];
+export const opsAndOperations = [add, subtract, divide, multiply, clear, equals];
 

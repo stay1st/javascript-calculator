@@ -36,59 +36,78 @@ export default class App extends React.Component {
   }
 
   appendOperator(e) {
-    const lastInputValue = this.state.input[this.state.input.length - 1];
-    Constants.decimal.toggle = "APPEND_ON";
+    
+    const constID = Constants[e.target.id];
+    const constVal = Constants[e.target.id].value;
 
-    if (Constants[e.target.id].value === "-") {
-      if (this.state.input.length === 1 && this.state.input[0] === 0) {
+    const input = this.state.input;
+    const inputCharInst = this.state.input[this.state.input.length - 1];
+    console.log('inputChar:', inputCharInst)
+    let stateValue = this.state.value;
+    let valueCharInst = stateValue;
+
+    if (valueCharInst.length - 1 !== -1) {
+      return valueCharInst = valueCharInst.length[this.state.value - 1];
+    }
+    console.log('%cConstID:','color: red;', constID)
+    /* If input only has only the Number(0) append a '-' onClick if the 
+    target is #subtract. Toggle Decimal ON */
+
+    if (input[0] === 0 && input.length - 1 === 0) {
+      if (constVal === "-") {
         this.setState({
-          input: [Constants[e.target.id].value],
-          count: this.state.count + 1,
+          input: [constVal],
         });
+        return (Constants.decimal.toggle = "APPEND_ON");
+      }
+      return undefined;
+    } else if (input[0] === 0 && typeof inputCharInst === "number") {
+      this.setState({
+        opID: constID,
+        value: [...input, constVal],
+        input: [...input, constVal],
+        count: this.state.count + 1,
+      });
+      Constants[e.target.id].expressions.push(this.state.value);
+      Constants[e.target.id].inputCount.push(this.state.count);
+      return (Constants.decimal.toggle = "APPEND_ON");
+    }
 
-        return Constants[e.target.id].inputCount.push(this.state.count);
-      } else if (lastInputValue !== "-") {
+    /* If target is a '-' subtract operator. Append only if there isn't a "." and 
+    the last input was a Number or other operator. Toggle Decimal ON */
+
+    if (constVal === "-") {
+      console.log(inputCharInst);
+      if (typeof inputCharInst === "number" && inputCharInst !== "-") {
+        if (inputCharInst === ".") {
+          return null;
+        }
         this.setState({
-          input: [...this.state.input, Constants[e.target.id].value],
-          count: this.state.count + 1,
+          input: [...input, "-"],
         });
-
-        Constants[e.target.id].expressions.push(this.state.input);
-        Constants[e.target.id].inputCount.push(this.state.count);
-        return console.log("Subtraction:", Constants.subtract.expressions);
+        return Constants.decimal.toggle = "APPEND_ON";
       }
     }
 
-    if (typeof lastInputValue === "number") {
-      this.setState({
-        opID: Constants[e.target.id],
-        value: [...this.state.input, Constants[e.target.id].value],
-        input: [0],
-        count: this.state.count + 1,
-      });
+    /* if input has >= 2 ( + || - || / ) will set state appending to `input` 
+    and 'value', or replace last char in input. Thereafter, Push the count 
+    and expression to the operators Array then Toggle Decimal ON'*/
 
-      Constants[e.target.id].expressions.push(this.state.value);
-      Constants[e.target.id].inputCount.push(this.state.count);
-
-      return console.log(
-        Constants[e.target.id],
-        Constants[e.target.id].expressions
-      );
-    } else if (lastInputValue !== "-") {
-      let removeLastExpression = Constants[this.state.opID].expressions.pop();
-      let lastOperator = this.state.value.pop();
-      let removeLastConstants = [this.state.opID].inputCount.pop();
-
-      removalHistory(removeLastExpression, lastOperator, removeLastConstants);
-
-      return this.setState({
-        opId: Constants[e.target.id].value,
-        history: [this.state.history, removalHistory],
-        value: [...this.state.input, Constants[e.target.id].value],
-        input: [0],
-        count: this.state.count + 1,
-      });
+    if (input.length >= 2 && inputCharInst !== "-") {
+      if (typeof inputCharInst === "number" && valueCharInst !== undefined) {
+        this.setState({
+          opID: constID,
+          value: [...input, constVal],
+          input: [...input, constVal],
+          count: this.state.count + 1,
+        });
+        Constants[e.target.id].expressions.push(this.state.value);
+        Constants[e.target.id].inputCount.push(this.state.count);
+        return (Constants.decimal.toggle = "APPEND_ON");
+      }
     }
+
+    
   }
 
   appendZeroIf() {
@@ -104,8 +123,8 @@ export default class App extends React.Component {
 
   appendDecimalIf() {
     if (Constants.decimal.toggle === "APPEND_ON") {
-      let lastInputValue = this.state.input[this.state.input.length - 1];
-      if (typeof lastInputValue !== "number") {
+      let prevStateInput = this.state.input[this.state.input.length - 1];
+      if (typeof prevStateInput !== "number") {
         this.setState({
           input: [...this.state.input, 0, Constants.decimal.value],
         });
@@ -119,12 +138,12 @@ export default class App extends React.Component {
   }
 
   clear(e) {
-   return this.state({
+    return this.setState({
       opID: "",
       value: [],
       input: [0],
       count: 0,
-   })
+    });
   }
 
   render() {
@@ -132,8 +151,10 @@ export default class App extends React.Component {
       <div>
         <div>
           <div>{/* from working test <Utils/> */}</div>
-          <h3 id="display">{this.state.input}</h3>
-          <h3>{this.state.result}</h3>
+          <div id="display">
+            <h4>{this.state.value}</h4>
+            <h3>{this.state.input}</h3>
+          </div>
           This is where constants show: {Constants.one.value}
         </div>
         <div>
