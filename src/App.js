@@ -1,8 +1,7 @@
 import React from "react";
 import * as Constants from "./objNumSym.js";
-import { Parser, Tokens, User } from "./Tokens";
-import { Evaluator } from "./Tokens";
 import "./styles/App.css";
+import TokeNparse from "./TokeNparse.js";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,18 +18,8 @@ export default class App extends React.Component {
   }
 
   evaluateEquals() {
-
     let inputJoined = this.state.input.join("");
-    const tokened = Tokens.getInstance();
-    const tokens = tokened.tokening(inputJoined);
-    let x = new Parser(tokens)
-    let xparse = x.parse(x.instance)
-    let bin = new User(xparse)
-    console.log('%c`x` new Parser App.js x:','color: orange:', x)
-    console.log('%c `xparse` x.parser App.js xparse:', 'color: orange;', xparse)
-    console.log('%c `bin` new User App.js', 'color: orange;', bin)
-    
-    
+    TokeNparse(`${inputJoined}`)
   }
 
   handleArithmetic(e) {

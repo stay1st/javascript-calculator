@@ -6,9 +6,6 @@
             this.id = id;
             this.objType = 'number';
             this.value = value;
-            this.getDetails = () => {
-                return 'This id is' + `${this.id}` + ' with this value ' + `${this.value}`;
-            };
         }
     }
 
