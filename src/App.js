@@ -66,7 +66,7 @@ export default class App extends React.Component {
       const append = false;
       return append;
     }
-
+    /* After evaluation. Use the solved answer to start the new expression */
     if (this.state.value !== undefined) {
       if (this.state.value[this.state.value.length - 2] === "=") {
         this.setState({
