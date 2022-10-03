@@ -7,10 +7,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opID: "",
       value: [],
       input: [0],
-      count: 0,
     };
     this.appendDecimalIf = this.appendDecimalIf.bind(this);
     this.appendZeroIf = this.appendZeroIf.bind(this);
@@ -18,6 +16,13 @@ export default class App extends React.Component {
     this.appendOperator = this.appendOperator.bind(this);
     this.clear = this.clear.bind(this);
     this.evaluateExpression = this.evaluateExpression.bind(this);
+  }
+
+  clear() {
+    return this.setState({
+      value: [],
+      input: [0]
+    });
   }
   
   evaluateExpression() {
@@ -66,26 +71,13 @@ export default class App extends React.Component {
       const append = false;
       return append;
     }
-    /* After evaluation. Use the solved answer to start the new expression */
+    /* Use new evaluated answer and start a new expressuion */
     if (this.state.value !== undefined) {
       if (this.state.value[this.state.value.length - 2] === "=") {
         this.setState({
           value: [this.state.input, constVal],
         });
       }
-    }
-
-    /* if last inputted character is a Number:
-    Spread the input add constVal to the array*/
-    if (lastInputCharacter === "number") {
-      console.log("lastInputCharacter 68:", lastInputCharacter);
-      this.setState({
-        opID: constID,
-        value: [...input, constVal],
-        input: [...input, constVal],
-        count: this.state.count + 1,
-      });
-      return (Constants.decimal.toggle = "APPEND_ON");
     }
 
     /* If target is a '-' subtract operator. Append only if there isn't a "." and 
@@ -104,15 +96,36 @@ export default class App extends React.Component {
         } else {
           /* set state but don't push to operator. Due to minus & negative integer reasons */
           this.setState({
-            opID: constID,
             value: [...input, "-"],
             input: [...input, "-"],
-            count: this.state.count + 1,
           });
           return (Constants.decimal.toggle = "APPEND_ON");
         }
       }
     }
+
+    /* replace prev operator */
+    if (typeof this.state.input[this.state.input.length - 1] !== "number") {
+      let input = this.state.input
+      delete input.pop()
+      this.setState({
+        value: [...input, constVal],
+        input: [...input, constVal]
+      })
+    }
+      
+
+    /* if last inputted character is a Number:
+    Spread the input add constVal to the array*/
+    if (lastInputCharacter === "number") {
+      console.log("lastInputCharacter 68:", lastInputCharacter);
+      this.setState({
+        value: [...input, constVal],
+        input: [...input, constVal],
+      });
+      return (Constants.decimal.toggle = "APPEND_ON");
+    }
+
 
     /* if input has >= 2 ( + || * || / ) will set state appending to `input` 
     and 'value', or replace last char in input. Thereafter, Toggle Decimal ON'*/
@@ -120,10 +133,8 @@ export default class App extends React.Component {
     if (1 <= input.length && typeof lastInputCharacter === "number") {
       if (lastInputCharacter !== ".") {
         this.setState({
-          opID: constID,
           value: [...input, constVal],
           input: [...input, constVal],
-          count: this.state.count + 1,
         });
         return (Constants.decimal.toggle = "APPEND_ON");
       }
@@ -155,15 +166,6 @@ export default class App extends React.Component {
       }
       return (Constants.decimal.toggle = "APPEND_OFF");
     }
-  }
-
-  clear(e) {
-    return this.setState({
-      opID: "",
-      value: [],
-      input: [0],
-      count: 0,
-    });
   }
 
   render() {
