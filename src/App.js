@@ -7,10 +7,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opID: "",
       value: [],
       input: [0],
-      count: 0,
     };
     this.appendDecimalIf = this.appendDecimalIf.bind(this);
     this.appendZeroIf = this.appendZeroIf.bind(this);
@@ -18,6 +16,13 @@ export default class App extends React.Component {
     this.appendOperator = this.appendOperator.bind(this);
     this.clear = this.clear.bind(this);
     this.evaluateExpression = this.evaluateExpression.bind(this);
+  }
+
+  clear() {
+    return this.setState({
+      value: [],
+      input: [0]
+    });
   }
   
   evaluateExpression() {
@@ -66,7 +71,7 @@ export default class App extends React.Component {
       const append = false;
       return append;
     }
-
+    /* Use new evaluated answer and start a new expressuion */
     if (this.state.value !== undefined) {
       if (this.state.value[this.state.value.length - 2] === "=") {
         this.setState({
@@ -74,6 +79,19 @@ export default class App extends React.Component {
         });
       }
     }
+    /* replace prev operator */
+    if (typeof this.state.input[this.state.input.length - 1] !== "number") {
+      if (constVal === '-') {
+        return null;
+      }
+      let input = this.state.input
+      delete input.pop()
+      this.setState({
+        value: [...input, constVal],
+        input: [...input, constVal]
+      })
+    }
+      
 
     /* if last inputted character is a Number:
     Spread the input add constVal to the array*/
@@ -155,15 +173,6 @@ export default class App extends React.Component {
       }
       return (Constants.decimal.toggle = "APPEND_OFF");
     }
-  }
-
-  clear(e) {
-    return this.setState({
-      opID: "",
-      value: [],
-      input: [0],
-      count: 0,
-    });
   }
 
   render() {
