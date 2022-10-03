@@ -1,4 +1,54 @@
 button {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 60px;
+    font-size: large;
+    border: none;
 }
+
+#display {
+    background-color: black;
+    color: white;
+    font-family: 'Orbitron';
+    font-size: 1.05em;
+    margin-bottom: 0;
+    padding: 12px;
+    overflow-wrap:normal;
+    width: auto;
+}
+#zero,
+#decimal,
+#one,
+#two,
+#three,
+#four,
+#five,
+#six,
+#seven,
+#eight,
+#nine {
+    background-color: rgb(43, 48, 53);
+    color: rgb(0, 255, 255);
+    border: none;
+}
+
+#clear {
+    background-color: rgb(228, 111, 27);
+    color: white;
+}
+
+#divide {
+    background-color: rgb(90, 92, 92);
+    color: rgb(43, 48, 53);
+}
+
+#clear,
+#divide,
+#decimal {
+    width: 160px;
+  }
+  #multiply,
+  #subtract,
+  #add,
+  #equals {
+    background-color:aqua
+  }

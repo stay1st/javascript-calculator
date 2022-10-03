@@ -1,8 +1,7 @@
 import React from "react";
 import * as Constants from "./objNumSym.js";
-import removalHistory from "./removalHistory.js";
 import "./styles/App.css";
-//import TokeNparse from "./TokeNparse.js";
+import { evaluate } from "mathjs";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,7 +12,6 @@ export default class App extends React.Component {
       input: [0],
       count: 0,
     };
-
     this.appendDecimalIf = this.appendDecimalIf.bind(this);
     this.appendZeroIf = this.appendZeroIf.bind(this);
     this.appendNumIf = this.appendNumIf.bind(this);
@@ -21,14 +19,27 @@ export default class App extends React.Component {
     this.clear = this.clear.bind(this);
     this.evaluateExpression = this.evaluateExpression.bind(this);
   }
-
+  
   evaluateExpression() {
-
+    if (typeof this.state.input[this.state.input.length - 1] !== "number") {
+      let input = this.state.input
+      delete input.pop()
+      this.setState({
+        value: [...input],
+        input: [...input]
+      })
+    }
+    const inputValsToString = this.state.input.join('');
+    const evaluatedInputNumber = evaluate(inputValsToString);
+    this.setState({
+      value: [...this.state.input, "=", evaluatedInputNumber],
+      input: [evaluatedInputNumber],
+    });
   }
 
   appendNumIf(e) {
     if (this.state.input[0] !== undefined) {
-      let zeroAndDecimal = this.state.input.map((val) => val);
+      const zeroAndDecimal = this.state.input.map((val) => val);
       return zeroAndDecimal[0] === 0 && zeroAndDecimal[1] !== "."
         ? this.setState({ input: [Constants[e.target.id].value] })
         : this.setState({
@@ -38,39 +49,42 @@ export default class App extends React.Component {
   }
 
   appendOperator(e) {
-    
     const constID = Constants[e.target.id];
     const constVal = Constants[e.target.id].value;
 
     const input = this.state.input;
     const lastInputCharacter = this.state.input[this.state.input.length - 1];
-    const lastValueCharacter = this.state.value[this.state.value.length - 1];
 
-      console.log('%cConstID:','color: red 54;', constID)
     /* If Number(0) append this operator '-' only. Toggle Decimal ON */
-    console.log('input.length:', this.state.input.length - 1)
     if (input[0] === 0 && input.length - 1 === 0) {
-      console.log('if input[0]', input)
       if (constVal === "-") {
         this.setState({
           input: [constVal],
         });
-        return Constants.decimal.toggle = "APPEND_ON"
+        return (Constants.decimal.toggle = "APPEND_ON");
       }
-    } 
-    /* if input.charAt(lastOfIndex) is a Number. 
-    Keep state input as is and append any operator*/
+      const append = false;
+      return append;
+    }
+
+    if (this.state.value !== undefined) {
+      if (this.state.value[this.state.value.length - 2] === "=") {
+        this.setState({
+          value: [this.state.input, constVal],
+        });
+      }
+    }
+
+    /* if last inputted character is a Number:
+    Spread the input add constVal to the array*/
     if (lastInputCharacter === "number") {
-        console.log('lastInputCharacter 68:', lastInputCharacter);
+      console.log("lastInputCharacter 68:", lastInputCharacter);
       this.setState({
         opID: constID,
         value: [...input, constVal],
         input: [...input, constVal],
         count: this.state.count + 1,
       });
-      /* push the value and count to the operator */
-      Constants[e.target.id].expressions.push(this.state.value);
-      Constants[e.target.id].inputCount.push(this.state.count);
       return (Constants.decimal.toggle = "APPEND_ON");
     }
 
@@ -78,33 +92,32 @@ export default class App extends React.Component {
     the last input was a Number or other operator. Toggle Decimal ON */
 
     if (constVal === "-" && 1 <= input.length - 1) {
-      console.log("constVal === '-'", constVal);
-      if (typeof lastInputCharacter === "number" || lastInputCharacter !== "-") {
+      if (
+        typeof lastInputCharacter === "number" ||
+        lastInputCharacter !== "-"
+      ) {
         /* if a decimal exists we only can append a number. 
         Also if '-' already exists we can't double up. */
         if (lastInputCharacter === ".") {
-          const append = false
+          const append = false;
           return append;
         } else {
-        /* set state but don't push to operator. Due to minus & negative integer reasons */
-        this.setState({
-          opID: constID,
-          value: [...input, '-'],
-          input: [...input, '-'],
-          count: this.state.count + 1
-        });
-        Constants[e.target.id].expressions.push(this.state.value);
-        Constants[e.target.id].inputCount.push(this.state.count);
-        return Constants.decimal.toggle = "APPEND_ON";
-      }
+          /* set state but don't push to operator. Due to minus & negative integer reasons */
+          this.setState({
+            opID: constID,
+            value: [...input, "-"],
+            input: [...input, "-"],
+            count: this.state.count + 1,
+          });
+          return (Constants.decimal.toggle = "APPEND_ON");
+        }
       }
     }
 
     /* if input has >= 2 ( + || * || / ) will set state appending to `input` 
-    and 'value', or replace last char in input. Thereafter, Push the count 
-    and expression to the operators Array then Toggle Decimal ON'*/
+    and 'value', or replace last char in input. Thereafter, Toggle Decimal ON'*/
 
-    if (1 <= input.length && typeof lastInputCharacter === 'number') {
+    if (1 <= input.length && typeof lastInputCharacter === "number") {
       if (lastInputCharacter !== ".") {
         this.setState({
           opID: constID,
@@ -112,13 +125,9 @@ export default class App extends React.Component {
           input: [...input, constVal],
           count: this.state.count + 1,
         });
-        Constants[e.target.id].expressions.push(this.state.value);
-        Constants[e.target.id].inputCount.push(this.state.count);
         return (Constants.decimal.toggle = "APPEND_ON");
       }
     }
-
-    
   }
 
   appendZeroIf() {
@@ -161,12 +170,10 @@ export default class App extends React.Component {
     return (
       <div>
         <div>
-          <div>{/* from working test <Utils/> */}</div>
-          <div id="display">
+        <div id="display">
             <h4>{this.state.value}</h4>
             <h3>{this.state.input}</h3>
           </div>
-          This is where constants show: {Constants.one.value}
         </div>
         <div>
           <button
@@ -206,6 +213,13 @@ export default class App extends React.Component {
           >
             {Constants.nine.value}
           </button>
+          <button
+            name={Constants.multiply.name}
+            id={Constants.multiply.id}
+            onClick={this.appendOperator}
+          >
+            x
+          </button>
         </div>
         <div>
           <button
@@ -228,6 +242,13 @@ export default class App extends React.Component {
             onClick={this.appendNumIf}
           >
             {Constants.six.value}
+          </button>
+          <button
+            name={Constants.subtract.name}
+            id={Constants.subtract.id}
+            onClick={this.appendOperator}
+          >
+            {Constants.subtract.value}
           </button>
         </div>
         <div>
@@ -252,6 +273,13 @@ export default class App extends React.Component {
           >
             {Constants.three.value}
           </button>
+          <button
+            name={Constants.add.name}
+            id={Constants.add.id}
+            onClick={this.appendOperator}
+          >
+            {Constants.add.value}
+          </button>
         </div>
         <div>
           <button
@@ -267,29 +295,6 @@ export default class App extends React.Component {
             onClick={this.appendDecimalIf}
           >
             {Constants.decimal.value}
-          </button>
-        </div>
-        <div id="arithmetic-operators">
-          <button
-            name={Constants.multiply.name}
-            id={Constants.multiply.id}
-            onClick={this.appendOperator}
-          >
-            {Constants.multiply.value}
-          </button>
-          <button
-            name={Constants.subtract.name}
-            id={Constants.subtract.id}
-            onClick={this.appendOperator}
-          >
-            {Constants.subtract.value}
-          </button>
-          <button
-            name={Constants.add.name}
-            id={Constants.add.id}
-            onClick={this.appendOperator}
-          >
-            {Constants.add.value}
           </button>
           <button
             className={Constants.equals.name}

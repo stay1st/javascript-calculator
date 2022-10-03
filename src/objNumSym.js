@@ -24,8 +24,6 @@ export const numNoZero = [one, two, three, four, five, six, seven, eight, nine];
             this.id = id;
             this.name = name;
             this.value = value;
-            this.expressions = [];
-            this.inputCount = [];
             this.toggle = 'APPEND_ON';
             
         }
