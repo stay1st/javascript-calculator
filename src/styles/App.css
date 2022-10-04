@@ -1,19 +1,118 @@
-button {
-    width: 80px;
-    height: 60px;
-    font-size: large;
-    border: none;
+:root {
+    --calc-bg1: radial-gradient(circle, rgb(239, 143, 239) 0%, rgb(60, 44, 12) 100%);
+    --box-shadow-color1: rgba(0,0,0,0.35);
+    --box-shadow-color2: 
+}
+
+@font-face {
+    font-family: 'Regular';
+    src: local('digital'),
+    url('../font/digital.woff') format('woff');
+}
+
+body {
+    background: var(--calc-bg1);
+    justify-content: center;
+    width: 100vw;
+}
+
+/* || ---------heading text--------- */
+
+h2,
+.title2,
+#h3calctext {
+    animation: fadeIn 8s;
+    text-align: center;
+    color: #eeb7b7;
+    font-family: 'Gaegu', cursive;
+    font-size: 1.25em;
+    line-height: calc(1rem/1.2);
+    letter-spacing: calc(.1rem/1.2);
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+#developedText {
+    animation: fadeIn 10s;
+    color:rgb(99, 176, 244);
+    margin-right: 9em;
+}
+
+/* ---------END heading text--------- */
+
+/* --||-------Calculator-Display------- */
+
+#input {
+    animation-delay: fadeIn 20s;
+    animation: fadeIn 2s;
+}
+
+@keyframes grow {
+    0% {
+        transform: translateY(-70%)
+    }
+    100% {
+        transform: translateY(0%);
+    }
+  }
+
+.container {
+    justify-content: center;
+    margin: auto;
+    max-width: calc(340px/1.2);
+    animation: 1.5s ease-in-out 0.1s 1 grow;
+    padding: calc(30px/1.2);
+    border-radius: calc(15px/1.2);
+    background-color: rgb(78, 74, 74);
+    border: 4px solid rgb(59, 59, 57);
+    -webkit-box-shadow: 7px 8px 24px 8px var(--box-shadow-color1);
+    -moz-box-shadow: 7px 8px 24px 8px var(--box-shadow-color1);
+    box-shadow: 7px 8px 24px 8px var(--box-shadow-color1);
 }
 
 #display {
-    background-color: black;
-    color: white;
-    font-family: 'Orbitron';
-    font-size: 1.05em;
-    margin-bottom: 0;
-    padding: 12px;
-    overflow-wrap:normal;
+    text-align: right;
+    font-size: calc(1.05em/1.2);
+    margin-bottom: 18px;
+    padding: calc(12px/1.2);
+    word-wrap: break-word;
     width: auto;
+    max-width: calc(316px/1.2);
+    font-family: 'Regular';
+    background: linear-gradient(325deg, rgba(57,54,107,1) 0%, rgb(69, 69, 183) 35%, rgb(0, 136, 255) 100%);
+    border: 2px solid rgb(51, 50, 50);
+    color: rgb(7, 227, 242);
+}
+
+/*--||-----Calculator-Button-----*/
+
+button {
+    width: calc(4.5em/1.2);
+    height: calc(3.5em/1.2);
+    font-size: large;
+    margin: calc(2px/1.2);
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+    border: 2px solid rgb(39, 38, 38);
+    color: rgb(78, 235, 177);
+}
+
+button:hover {
+    filter:brightness(85%);
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #zero,
 #decimal,
@@ -27,28 +126,32 @@ button {
 #eight,
 #nine {
     background-color: rgb(43, 48, 53);
-    color: rgb(0, 255, 255);
-    border: none;
+
 }
 
 #clear {
-    background-color: rgb(228, 111, 27);
-    color: white;
+    background-color: rgb(183, 96, 35);
+;
 }
 
 #divide {
-    background-color: rgb(90, 92, 92);
-    color: rgb(43, 48, 53);
+    background-color: rgb(34, 35, 35);
+
 }
 
 #clear,
 #divide,
 #decimal {
-    width: 160px;
+    justify-content: left;
+    width: calc(9.21em/1.2);
+    
   }
   #multiply,
   #subtract,
   #add,
   #equals {
-    background-color:aqua
+    background: linear-gradient(#794141, #7e2828);
+    border: 2px solid rgb(34, 35, 35);
+    border-radius: 90px;
   }
+/*-----END-Calculator-Buttons----*/

@@ -1,14 +1,16 @@
 import React from "react";
 import * as Constants from "./objNumSym.js";
-import "./styles/App.css";
 import { evaluate } from "mathjs";
+import './font/digital.woff'
+import "./styles/App.css";
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: [],
-      input: [0],
+      value2: [],
+      input: [0]
     };
     this.appendDecimalIf = this.appendDecimalIf.bind(this);
     this.appendZeroIf = this.appendZeroIf.bind(this);
@@ -21,9 +23,11 @@ export default class App extends React.Component {
   clear() {
     return this.setState({
       value: [],
+      value2: [],
       input: [0]
     });
   }
+  
   
   evaluateExpression() {
     if (typeof this.state.input[this.state.input.length - 1] !== "number") {
@@ -37,7 +41,7 @@ export default class App extends React.Component {
     const inputValsToString = this.state.input.join('');
     const evaluatedInputNumber = evaluate(inputValsToString);
     this.setState({
-      value: [...this.state.input, "=", evaluatedInputNumber],
+      value: [...this.state.input, "=", Math.round(evaluatedInputNumber, 6)],
       input: [evaluatedInputNumber],
     });
   }
@@ -54,7 +58,6 @@ export default class App extends React.Component {
   }
 
   appendOperator(e) {
-    const constID = Constants[e.target.id];
     const constVal = Constants[e.target.id].value;
 
     const input = this.state.input;
@@ -71,14 +74,14 @@ export default class App extends React.Component {
       const append = false;
       return append;
     }
+
     /* Use new evaluated answer and start a new expressuion */
-    if (this.state.value !== undefined) {
-      if (this.state.value[this.state.value.length - 2] === "=") {
+
+    if (this.state.value.join().match('=') !== null) {
         this.setState({
-          value: [this.state.input, constVal],
-        });
-      }
-    }
+          value: [this.state.value, constVal]
+        })
+    };
 
     /* If target is a '-' subtract operator. Append only if there isn't a "." and 
     the last input was a Number or other operator. Toggle Decimal ON */
@@ -170,11 +173,11 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div>
         <div id="display">
             <h4>{this.state.value}</h4>
-            <h3>{this.state.input}</h3>
+            <h3 id="input">{this.state.input}</h3>
           </div>
         </div>
         <div>
@@ -209,8 +212,8 @@ export default class App extends React.Component {
             {Constants.eight.value}
           </button>
           <button
-            className={Constants.nine.objType}
-            id={Constants.nine.id}
+            className={Constants.nine.objType} 
+            id={Constants.nine.id} 
             onClick={this.appendNumIf}
           >
             {Constants.nine.value}
@@ -310,3 +313,4 @@ export default class App extends React.Component {
     );
   }
 }
+export default App

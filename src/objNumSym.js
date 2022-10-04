@@ -1,11 +1,15 @@
-    class createBtnObjs {
+import React from "react";
+
+    class createBtnObjs extends React.Component {
         constructor(id, value) {
+            super();
             this.id = id;
             this.objType = 'number';
             this.value = value;
         }
     }
 
+    
     export const one = new createBtnObjs('one', 1);
     export const two = new createBtnObjs('two', 2);
     export const three = new createBtnObjs('three', 3);
@@ -15,6 +19,7 @@
     export const seven = new createBtnObjs('seven', 7);
     export const eight = new createBtnObjs('eight', 8);
     export const nine = new createBtnObjs('nine', 9);
+    
 
 export const numNoZero = [one, two, three, four, five, six, seven, eight, nine];
 
